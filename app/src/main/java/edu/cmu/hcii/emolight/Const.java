@@ -21,5 +21,7 @@ public class Const {
 
     final static public String[] APP_PACKAGE_NAME_TO_HANDLE = {"com.google.android.youtube", "com.musixmatch.android.lyrify"};
 
-    final static public  int YOUTUBE_MAIN_TITLE_THRESHOLD = 1100;
+    final static public int YOUTUBE_MAIN_TITLE_THRESHOLD = 1100;
+    final static public int MUSIXMATCH_HEIGHT_THRESHOLD = 300;
+    final static public int MUSIXMATCH_WIDTH_THRESHOLD = 500;
 }

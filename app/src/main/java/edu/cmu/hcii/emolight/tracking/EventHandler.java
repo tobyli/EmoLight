@@ -129,7 +129,7 @@ public class EventHandler {
         else {
             if(node.getPackageName().toString().contentEquals("com.musixmatch.android.lyrify")){
                 //lyrify
-                if(nodeBoundingBox.width() > 500 && nodeBoundingBox.height() > 300)
+                if(nodeBoundingBox.width() > Const.MUSIXMATCH_WIDTH_THRESHOLD && nodeBoundingBox.height() > Const.MUSIXMATCH_HEIGHT_THRESHOLD)
                     return true;
             }
         }
