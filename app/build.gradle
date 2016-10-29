@@ -14,6 +14,7 @@ android {
 //            enabled true
 //        }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -22,11 +23,23 @@ android {
     }
     productFlavors {
     }
+
+//    dexOptions {
+//        incremental true
+//    }
 //    compileOptions {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
 //    }
 }
+
+allprojects {
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = "1.7"
+        targetCompatibility = "1.7"
+    }
+}
+
 repositories {
     jcenter()
     maven {
@@ -44,7 +57,7 @@ dependencies {
 //    })
 //    testCompile 'junit:junit:4.12'
 
-    compile(group: 'com.bezirk', name: 'PhilipsHue', version: '0.0.2')
+    compile(group: 'com.bezirk', name: 'PhilipsHue', version: '0.0.2-1')
     compile 'com.ibm.watson.developer_cloud:java-sdk:3.0.0-RC1'
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile(group: 'com.bezirk', name: 'HardwareEvents', version: '0.0.30')

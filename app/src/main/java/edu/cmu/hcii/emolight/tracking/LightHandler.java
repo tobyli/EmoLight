@@ -46,13 +46,12 @@ public class LightHandler {
     }
 
     public LightHandler(Context context){
-        init();
-
+        init(context);
         this.context = context;
     }
 
-    public void init() {
-        BezirkMiddleware.initialize(context,"EmoLight");
+    public void init(Context context) {
+        BezirkMiddleware.initialize(context, "EmoLight");
 
         //Register with BezirkMiddleware to get an instance of Bezirk API.
         //The parameter is any human-readable string for a name of your Zirk
