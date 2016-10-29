@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.cmu.hcii.emolight.Const;
+import edu.cmu.hcii.emolight.emotion.EmotionUtils;
+import edu.cmu.hcii.emolight.emotion.NLP;
 
 /**
  * @author toby
@@ -74,6 +76,7 @@ public class EventHandler {
             dialog.show();
             */
             Toast.makeText(context, "EmoLight: " + title, Toast.LENGTH_SHORT).show();
+            String color = EmotionUtils.emotion2Color(NLP.v().getEmotion(title));
         }
 
     }
