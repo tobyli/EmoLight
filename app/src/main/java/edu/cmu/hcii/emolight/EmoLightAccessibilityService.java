@@ -53,7 +53,7 @@ public class EmoLightAccessibilityService extends AccessibilityService {
         }
 
         //return if the event is not among the apps we handle
-        if(!appPackageNameToHandle.contains(event.getPackageName())){
+        if(event.getPackageName() != null && (!appPackageNameToHandle.contains(event.getPackageName()))){
             return;
         }
 

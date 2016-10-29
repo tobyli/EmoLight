@@ -8,9 +8,12 @@ import android.graphics.Rect;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.cmu.hcii.emolight.Const;
 
 /**
  * @author toby
@@ -54,8 +57,9 @@ public class EventHandler {
             //title updated
             //TODO: output bounding box + width
             currentTitle = title;
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Found YouTube Title!")
+            builder.setTitle("Found Document Title!")
                     .setMessage(title + "\n"
                     + "bounding box: " + selectedNodeBoundingBox.toShortString() + "\n"
                     + "width: " + selectedNodeBoundingBox.width())
@@ -68,6 +72,8 @@ public class EventHandler {
             Dialog dialog = builder.create();
             dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
             dialog.show();
+            */
+            Toast.makeText(context, "EmoLight: " + title, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -107,18 +113,28 @@ public class EventHandler {
         //TODO: not hard code the string in the source code
         if(node.getText() == null)
             return false;
-        if(node.getViewIdResourceName() == null)
-            return false;
-        if(!node.getViewIdResourceName().contentEquals("com.google.android.youtube:id/title"))
-            return false;
 
         Rect nodeBoundingBox = new Rect();
         node.getBoundsInScreen(nodeBoundingBox);
 
-        if(nodeBoundingBox.width() < 1100)
-            return false;
+        //youtube
+        if(node.getPackageName().toString().contentEquals("com.google.android.youtube")) {
+            //youtube
+            if (node.getViewIdResourceName() != null &&
+                    node.getViewIdResourceName().contentEquals("com.google.android.youtube:id/title") &&
+                    nodeBoundingBox.width() >= Const.YOUTUBE_MAIN_TITLE_THRESHOLD)
+                return true;
+        }
 
-        return true;
+        else {
+            if(node.getPackageName().toString().contentEquals("com.musixmatch.android.lyrify")){
+                //lyrify
+                if(nodeBoundingBox.width() > 500 && nodeBoundingBox.height() > 300)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
 }

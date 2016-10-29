@@ -19,7 +19,7 @@ public class Const {
             AccessibilityEvent.TYPE_WINDOWS_CHANGED,
             AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED};
 
-    final static public String[] APP_PACKAGE_NAME_TO_HANDLE = {"com.google.android.youtube"};
+    final static public String[] APP_PACKAGE_NAME_TO_HANDLE = {"com.google.android.youtube", "com.musixmatch.android.lyrify"};
 
-    final static public  int MAIN_TITLE_THRESHOLD = 1100;
+    final static public  int YOUTUBE_MAIN_TITLE_THRESHOLD = 1100;
 }
