@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Rect;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class EventHandler {
 
-    private String currentTitle;
+    public String currentTitle;
     Context context;
 
     public EventHandler(Context context){
@@ -43,14 +44,21 @@ public class EventHandler {
             System.out.println("WARNING: GET A FILTERED LIST OF SIZE " + filteredList.size());
         }
 
-        String title = new String(filteredList.get(0).getText().toString());
+        AccessibilityNodeInfo selectedNode = filteredList.get(0);
+        String title = new String(selectedNode.getText().toString());
+        Rect selectedNodeBoundingBox = new Rect();
+        selectedNode.getBoundsInScreen(selectedNodeBoundingBox);
+
 
         if(!title.contentEquals(currentTitle)){
             //title updated
+            //TODO: output bounding box + width
             currentTitle = title;
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Found YouTube Title!")
-                    .setMessage(title)
+                    .setMessage(title + "\n"
+                    + "bounding box: " + selectedNodeBoundingBox.toShortString() + "\n"
+                    + "width: " + selectedNodeBoundingBox.width())
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -97,12 +105,20 @@ public class EventHandler {
 
     private boolean filter (AccessibilityNodeInfo node){
         //TODO: not hard code the string in the source code
-        if(node.getViewIdResourceName() != null &&
-                node.getViewIdResourceName().contentEquals("com.google.android.youtube:id/title") &&
-                node.getText() != null)
-            return true;
-        else
+        if(node.getText() == null)
             return false;
+        if(node.getViewIdResourceName() == null)
+            return false;
+        if(!node.getViewIdResourceName().contentEquals("com.google.android.youtube:id/title"))
+            return false;
+
+        Rect nodeBoundingBox = new Rect();
+        node.getBoundsInScreen(nodeBoundingBox);
+
+        if(nodeBoundingBox.width() < 1100)
+            return false;
+
+        return true;
     }
 
 }

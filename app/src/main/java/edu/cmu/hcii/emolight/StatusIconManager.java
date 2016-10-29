@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import edu.cmu.hcii.emolight.tracking.EventHandler;
+
 /**
  * @author toby
  * @date 10/29/16
@@ -33,10 +35,12 @@ public class StatusIconManager {
     private Context context;
     private WindowManager windowManager;
     private WindowManager.LayoutParams params;
+    private EventHandler eventHandler;
 
 
-    public StatusIconManager(Context context) {
+    public StatusIconManager(Context context, EventHandler eventHandler) {
         this.context = context;
+        this.eventHandler = eventHandler;
         windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
     }
 
@@ -132,7 +136,7 @@ public class StatusIconManager {
                 if (gestureDetector.onTouchEvent(event)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("You hit me!")
-                            .setMessage("ah ah ah ah ah that hurts!!!!!")
+                            .setMessage("Last watched video: " + eventHandler.currentTitle)
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

@@ -3,6 +3,7 @@ package edu.cmu.hcii.emolight;
 import android.accessibilityservice.AccessibilityService;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,12 +21,23 @@ public class EmoLightAccessibilityService extends AccessibilityService {
     EventHandler eventHandler;
     Set<Integer> accessibilityEventToHandle;
     Set<String> appPackageNameToHandle;
+    StatusIconManager statusIconManager;
 
     @Override
     public void onCreate(){
         super.onCreate();
 
         eventHandler = new EventHandler(this);
+        statusIconManager = new StatusIconManager(this, eventHandler);
+
+        try {
+            Toast.makeText(this, "EmoLight Accessibility Service Started", Toast.LENGTH_SHORT).show();
+            statusIconManager.addStatusIcon();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            //do nothing
+        }
 
         accessibilityEventToHandle = new HashSet<>(Arrays.asList(Const.ACCESSIBILITY_EVENT_TO_HANDLE));
         appPackageNameToHandle = new HashSet<>(Arrays.asList(Const.APP_PACKAGE_NAME_TO_HANDLE));
@@ -55,6 +67,21 @@ public class EmoLightAccessibilityService extends AccessibilityService {
     @Override
     public void onServiceConnected(){
         super.onServiceConnected();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Toast.makeText(this, "EmoLight Accessibility Service Stopped", Toast.LENGTH_SHORT).show();
+        if(statusIconManager != null)
+            try {
+                statusIconManager.removeStatusIcon();
+            }
+            catch (Exception e){
+                //failed to remove status icon
+                e.printStackTrace();
+            }
+
     }
 
 }
