@@ -38,13 +38,20 @@ public class NLP {
     public DocumentEmotion.Emotion getEmotion(String text) {
         if (text == null || text.length() == 0) {
             Log.e(LOGTAG, "Input text is null/empty.");
+            return null;
         }
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("text", text);
-        ServiceCall<DocumentEmotion> emotionCall = service.getEmotion(params);
-        DocumentEmotion.Emotion emotion = emotionCall.execute().getEmotion();
-        return emotion;
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("text", text);
+            ServiceCall<DocumentEmotion> emotionCall = service.getEmotion(params);
+            DocumentEmotion.Emotion emotion = emotionCall.execute().getEmotion();
+            return emotion;
+        }
+        catch (Exception e) {
+            Log.e(LOGTAG, "Error getting emotion.");
+            return null;
+        }
     }
 
     public static void main(String[] args) {

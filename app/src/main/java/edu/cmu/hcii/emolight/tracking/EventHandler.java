@@ -95,9 +95,11 @@ public class EventHandler {
         protected Void doInBackground(String... params) {
             String title = params[0];
             DocumentEmotion.Emotion emotion = NLP.v().getEmotion(title);
-
+            if (emotion == null) return null;
 
             String color = EmotionUtils.emotion2Color2(emotion);
+            if (color == null) return null;
+
             System.out.println(String.format("text: %s\nemotion:\n%s\ncolor: %s\n",
                     "",
                     EmotionUtils.emotion2String(emotion),

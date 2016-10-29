@@ -57,6 +57,9 @@ public class EmotionUtils {
     }
 
     public static String emotion2Color2(DocumentEmotion.Emotion emotion) {
+        if (emotion == null) {
+            return null;
+        }
         double joy = emotion.getJoy();
         double sadness = emotion.getSadness();
         double anger = emotion.getAnger();
