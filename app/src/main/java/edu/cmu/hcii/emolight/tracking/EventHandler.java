@@ -9,6 +9,10 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
+import android.os.AsyncTask;
+
+import com.bezirk.hardwareevents.HexColor;
+import com.ibm.watson.developer_cloud.alchemy.v1.model.DocumentEmotion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +30,12 @@ public class EventHandler {
 
     public String currentTitle;
     Context context;
+    LightHandler lightHandler;
 
     public EventHandler(Context context){
         currentTitle = new String("");
         this.context = context;
+        lightHandler = new LightHandler(context);
     }
 
     /**
@@ -76,10 +82,33 @@ public class EventHandler {
             dialog.show();
             */
             Toast.makeText(context, "EmoLight: " + title, Toast.LENGTH_SHORT).show();
-            String color = EmotionUtils.emotion2Color(NLP.v().getEmotion(title));
+
+            new LongOperation().execute(title);
+
         }
 
     }
+
+    private class LongOperation extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... params) {
+            String title = params[0];
+            DocumentEmotion.Emotion emotion = NLP.v().getEmotion(title);
+
+
+            String color = EmotionUtils.emotion2Color2(emotion);
+            System.out.println(String.format("text: %s\nemotion:\n%s\ncolor: %s\n",
+                    "",
+                    EmotionUtils.emotion2String(emotion),
+                    color));
+            lightHandler.sendColorChangeEvent(new HexColor(color));
+            return null;
+        }
+
+
+    }
+
 
     //the title should have id: com.google.android.youtube:id/title
 

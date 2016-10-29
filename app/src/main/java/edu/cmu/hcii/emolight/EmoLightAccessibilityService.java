@@ -5,12 +5,14 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
+import com.bezirk.middleware.Bezirk;
+import com.bezirk.middleware.android.BezirkMiddleware;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import edu.cmu.hcii.emolight.tracking.EventHandler;
-
 /**
  * @author toby
  * @date 10/29/16
@@ -18,7 +20,10 @@ import edu.cmu.hcii.emolight.tracking.EventHandler;
  */
 public class EmoLightAccessibilityService extends AccessibilityService {
 
+
     EventHandler eventHandler;
+
+
     Set<Integer> accessibilityEventToHandle;
     Set<String> appPackageNameToHandle;
     StatusIconManager statusIconManager;
@@ -27,7 +32,12 @@ public class EmoLightAccessibilityService extends AccessibilityService {
     public void onCreate(){
         super.onCreate();
 
+        //Initialize the Bezirk service
+
+
         eventHandler = new EventHandler(this);
+//        lightHandler = new LightHandler(this,bezirk);
+
         statusIconManager = new StatusIconManager(this, eventHandler);
 
         try {
@@ -58,6 +68,7 @@ public class EmoLightAccessibilityService extends AccessibilityService {
         }
 
         eventHandler.handle(event, rootNode);
+
     }
 
     @Override
