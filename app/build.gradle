@@ -27,6 +27,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'edu.stanford.nlp:stanford-corenlp:3.6.0'
+    compile 'com.ibm.watson.developer_cloud:java-sdk:3.0.0-RC1'
     testCompile 'junit:junit:4.12'
 }
