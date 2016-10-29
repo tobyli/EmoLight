@@ -56,6 +56,17 @@ public class EmotionUtils {
         return DEFAULT_COLOR;
     }
 
+    public static String emotion2Color2(DocumentEmotion.Emotion emotion) {
+        double joy = emotion.getJoy();
+        double sadness = emotion.getSadness();
+        double anger = emotion.getAnger();
+        int r = (int) (256 * anger);
+        int g = (int) (256 * joy);
+        int b = (int) (256 * sadness);
+        String hex = String.format("#%02x%02x%02x", r, g, b);
+        return hex;
+    }
+
     public static String emotion2String(DocumentEmotion.Emotion emotion) {
         String emoStr = String.format("\t%s: %f\n\t%s: %f\n\t%s: %f\n\t%s: %f\n\t%s: %f\n",
                 "joy", emotion.getJoy(),

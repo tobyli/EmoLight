@@ -50,7 +50,7 @@ public class NLP {
     public static void main(String[] args) {
         String text = "I'm tryna put you in the worst mood, ah";
         DocumentEmotion.Emotion emotion = NLP.v().getEmotion(text);
-        String color = EmotionUtils.emotion2Color(emotion);
+        String color = EmotionUtils.emotion2Color2(emotion);
 
         System.out.println(String.format("text: %s\nemotion:\n%s\ncolor: %s\n",
                 text,
