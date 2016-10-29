@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EmoLight</string>
+    <string name="accessibility_service_description">EmoLight Accessiblity Service</string>
 </resources>
