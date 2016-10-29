@@ -63,19 +63,23 @@ public class EmotionUtils {
         double joy = emotion.getJoy();
         double sadness = emotion.getSadness();
         double anger = emotion.getAnger();
-        int r = (int) (256 * anger);
-        int g = (int) (256 * joy);
-        int b = (int) (256 * sadness);
+        int r = (int) (255 * anger);
+        int g = (int) (255 * joy);
+        int b = (int) (255 * sadness);
         String hex = String.format("#%02x%02x%02x", r, g, b);
         return hex;
     }
 
     public static String emotion2String(DocumentEmotion.Emotion emotion) {
-        String emoStr = String.format("\t%s: %f\n\t%s: %f\n\t%s: %f\n\t%s: %f\n\t%s: %f\n",
+//        String emoStr = String.format("\t%s: %f\n\t%s: %f\n\t%s: %f\n\t%s: %f\n\t%s: %f\n",
+//                "joy", emotion.getJoy(),
+//                "anger", emotion.getAnger(),
+//                "disgust", emotion.getDisgust(),
+//                "fear", emotion.getFear(),
+//                "sadness", emotion.getSadness());
+        String emoStr = String.format("\t%s: %f\n\t%s: %f\n\t%s: %f\n",
                 "joy", emotion.getJoy(),
                 "anger", emotion.getAnger(),
-                "disgust", emotion.getDisgust(),
-                "fear", emotion.getFear(),
                 "sadness", emotion.getSadness());
         return emoStr;
     }

@@ -101,7 +101,7 @@ public class EventHandler {
             if (color == null) return null;
 
             System.out.println(String.format("text: %s\nemotion:\n%s\ncolor: %s\n",
-                    "",
+                    title,
                     EmotionUtils.emotion2String(emotion),
                     color));
             lightHandler.sendColorChangeEvent(new HexColor(color));
