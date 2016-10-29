@@ -4,12 +4,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Rect;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.cmu.hcii.emolight.Const;
 
 /**
  * @author toby
@@ -18,7 +22,7 @@ import java.util.List;
  */
 public class EventHandler {
 
-    private String currentTitle;
+    public String currentTitle;
     Context context;
 
     public EventHandler(Context context){
@@ -43,14 +47,22 @@ public class EventHandler {
             System.out.println("WARNING: GET A FILTERED LIST OF SIZE " + filteredList.size());
         }
 
-        String title = new String(filteredList.get(0).getText().toString());
+        AccessibilityNodeInfo selectedNode = filteredList.get(0);
+        String title = new String(selectedNode.getText().toString());
+        Rect selectedNodeBoundingBox = new Rect();
+        selectedNode.getBoundsInScreen(selectedNodeBoundingBox);
+
 
         if(!title.contentEquals(currentTitle)){
             //title updated
+            //TODO: output bounding box + width
             currentTitle = title;
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Found YouTube Title!")
-                    .setMessage(title)
+            builder.setTitle("Found Document Title!")
+                    .setMessage(title + "\n"
+                    + "bounding box: " + selectedNodeBoundingBox.toShortString() + "\n"
+                    + "width: " + selectedNodeBoundingBox.width())
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -60,6 +72,8 @@ public class EventHandler {
             Dialog dialog = builder.create();
             dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
             dialog.show();
+            */
+            Toast.makeText(context, "EmoLight: " + title, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -97,12 +111,30 @@ public class EventHandler {
 
     private boolean filter (AccessibilityNodeInfo node){
         //TODO: not hard code the string in the source code
-        if(node.getViewIdResourceName() != null &&
-                node.getViewIdResourceName().contentEquals("com.google.android.youtube:id/title") &&
-                node.getText() != null)
-            return true;
-        else
+        if(node.getText() == null)
             return false;
+
+        Rect nodeBoundingBox = new Rect();
+        node.getBoundsInScreen(nodeBoundingBox);
+
+        //youtube
+        if(node.getPackageName().toString().contentEquals("com.google.android.youtube")) {
+            //youtube
+            if (node.getViewIdResourceName() != null &&
+                    node.getViewIdResourceName().contentEquals("com.google.android.youtube:id/title") &&
+                    nodeBoundingBox.width() >= Const.YOUTUBE_MAIN_TITLE_THRESHOLD)
+                return true;
+        }
+
+        else {
+            if(node.getPackageName().toString().contentEquals("com.musixmatch.android.lyrify")){
+                //lyrify
+                if(nodeBoundingBox.width() > 500 && nodeBoundingBox.height() > 300)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
 }
